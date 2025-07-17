@@ -25,9 +25,11 @@ runs:
         MOUNT="kv"
         IFS=',' read -ra PATHS <<< "${{ inputs.secret_paths }}"
         for path in "${PATHS[@]}"; do
-          secret_json=$(vault kv get -mount="$MOUNT" -format=json "$path" 2>/dev/null || echo "")
+          secret_json=$(vault kv get -mount="kv" -format=json "$path" 2>/dev/null || echo "")
           if [ -n "$secret_json" ] && [ "$(echo "$secret_json" | jq '.data.data != null')" = "true" ]; then
-            echo "$secret_json" | jq -r '.data.data | to_entries[] | "VAULT_\(.key | toupper)=\(.value)"' >> $GITHUB_ENV
+            echo "$secret_json" | jq -r '.data.data | to_entries[] | "\(.key)=\(.value)"' | while IFS='=' read -r k v; do
+              echo "VAULT_${k^^}=$v" >> $GITHUB_ENV
+            done
           else
             echo "[get-secrets-vault] Warning: No data or cannot access $path" >&2
           fi
