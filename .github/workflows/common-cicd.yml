@@ -103,7 +103,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: https://secret.vdx.vn
-          method: approle
+#          method: approle
           token: ${{ secrets.VAULT_TOKEN }}
 #          roleId: ${{ secrets.VAULT_ROLE_ID }}
 #          secretId: ${{ secrets.VAULT_SECRET_ID }}
