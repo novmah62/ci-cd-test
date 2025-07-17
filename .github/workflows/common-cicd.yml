@@ -1,5 +1,6 @@
 name: ci/cd
 on:
+    push:
     workflow_call:
         inputs:
             repo_name:
