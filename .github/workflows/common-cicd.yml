@@ -107,7 +107,7 @@ jobs:
           secret_paths: "vdx-vn/g10-wms/dev/info"
       - name: Print all Vault env (test)
         run: printenv | grep '^VAULT_' | sort
-
+#1
 #      - uses: actions/checkout@v4
 #      - name: Import Secrets from Vault
 #        uses: hashicorp/vault-action@v2
