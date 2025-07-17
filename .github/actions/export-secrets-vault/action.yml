@@ -24,5 +24,10 @@ runs:
         export VAULT_TOKEN="${{ inputs.token }}"
         IFS=',' read -ra PATHS <<< "${{ inputs.secret_paths }}"
         for path in "${PATHS[@]}"; do
-          vault kv get -format=json "$path" | jq -r '.data.data | to_entries[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
+          secret_json=$(vault kv get -format=json "$path" 2>/dev/null || echo "")
+          if [ -n "$secret_json" ] && [ "$(echo "$secret_json" | jq '.data.data != null')" = "true" ]; then
+            echo "$secret_json" | jq -r '.data.data | to_entries[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
+          else
+            echo "[get-secrets-vault] Warning: No data or cannot access $path" >&2
+          fi
         done
