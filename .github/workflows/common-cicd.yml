@@ -102,16 +102,18 @@ jobs:
       - name: Import Secrets from Vault
         uses: hashicorp/vault-action@v2
         with:
-          url: http://127.0.0.1:8200
+          url: https://secret.vdx.vn
           method: approle
-          roleId: ${{ secrets.VAULT_ROLE_ID }}
-          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          token: ${{ secrets.VAULT_TOKEN }}
+#          roleId: ${{ secrets.VAULT_ROLE_ID }}
+#          secretId: ${{ secrets.VAULT_SECRET_ID }}
           secrets: |
-            kv/data/vdx-vn/g10-qms/dev/db   odoo_db_host | odoo_db_host ;
-            kv/data/vdx-vn/g10-qms/dev/info odoo_master_password | odoo_master_password ;
-            kv/data/vdx-vn/g10-qms/dev/ssh  odoo_ssh_host | odoo_ssh_host;
+             cubbyhole/manhnv/ansible        GITHUB_PAT | GITHUB_PAT ;
+#            kv/data/vdx-vn/g10-qms/dev/db   odoo_db_host | odoo_db_host ;
+#            kv/data/vdx-vn/g10-qms/dev/info odoo_master_password | odoo_master_password ;
+#            kv/data/vdx-vn/g10-qms/dev/ssh  odoo_ssh_host | odoo_ssh_host;
       - name: Print Vault env keys (test only)
         run: |
           echo "==== ENV KEYS FROM VAULT ===="
-          printenv | grep -E 'DB_|INFO_|SSH_' | sort
+          printenv | sort
   
