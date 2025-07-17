@@ -60,9 +60,7 @@ env:
     REPOSITORY: ${{ inputs.repo_name }}
     PR_NUMBER: ${{ inputs.pr_number }}
     PR_URL: ${{ inputs.pr_url }}
-    IGNORE_TEST: ${{ fromJson(inputs.additional_args).ignore_test }}
-    IGNORE_INTEGRATION_TEST: ${{ fromJson(inputs.additional_args).ignore_integration_test || 'false' }}
-
+    
     # # ==== Repository secrets ====
     # GH_SSH_KEY: ${{secrets.GH_SSH_KEY}} # ssh key text to access GitHub repo
     # GH_CHECK_RUNS_MANAGER_TOKEN: ${{ secrets.GH_CHECK_RUNS_MANAGER_TOKEN }} # token use to create and update check run
