@@ -104,7 +104,7 @@ jobs:
         with:
           vault_addr: https://secret.vdx.vn
           token: ${{ secrets.VAULT_TOKEN }}
-          secret_paths: "kv/vdx-vn/g10-wms/dev/info"
+          secret_paths: "vdx-vn/g10-wms/dev/info"
       - name: Print all Vault env (test)
         run: printenv | grep '^VAULT_' | sort
 
