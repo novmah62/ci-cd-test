@@ -104,7 +104,7 @@ jobs:
         with:
           vault_addr: https://secret.vdx.vn
           token: ${{ secrets.VAULT_TOKEN }}
-          secret_paths: cubbyhole/manhnv/ansible, cubbyhole/manhnv/odoo
+          secret_paths: cubbyhole/manhnv/ansible
       - name: Print all Vault env (test)
         run: printenv | sort
 
