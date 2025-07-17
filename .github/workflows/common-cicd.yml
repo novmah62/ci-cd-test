@@ -60,7 +60,7 @@ env:
     REPOSITORY: ${{ inputs.repo_name }}
     PR_NUMBER: ${{ inputs.pr_number }}
     PR_URL: ${{ inputs.pr_url }}
-    
+
     # # ==== Repository secrets ====
     # GH_SSH_KEY: ${{secrets.GH_SSH_KEY}} # ssh key text to access GitHub repo
     # GH_CHECK_RUNS_MANAGER_TOKEN: ${{ secrets.GH_CHECK_RUNS_MANAGER_TOKEN }} # token use to create and update check run
@@ -107,9 +107,9 @@ jobs:
           roleId: ${{ secrets.VAULT_ROLE_ID }}
           secretId: ${{ secrets.VAULT_SECRET_ID }}
           secrets: |
-            kv/data/vdx-vn/g10-qms/dev/db   . | .;
-            kv/data/vdx-vn/g10-qms/dev/info . | .;
-            kv/data/vdx-vn/g10-qms/dev/ssh  . | .;
+            kv/data/vdx-vn/g10-qms/dev/db   odoo_db_host | odoo_db_host ;
+            kv/data/vdx-vn/g10-qms/dev/info odoo_master_password | odoo_master_password ;
+            kv/data/vdx-vn/g10-qms/dev/ssh  odoo_ssh_host | odoo_ssh_host;
       - name: Print Vault env keys (test only)
         run: |
           echo "==== ENV KEYS FROM VAULT ===="
