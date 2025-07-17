@@ -1,0 +1,28 @@
+name: 'get-secrets-vault'
+description: 'Export all key-value pairs from Vault secret path(s) to environment'
+inputs:
+  vault_addr:
+    required: true
+    description: 'Vault address'
+  token:
+    required: true
+    description: 'Vault token'
+  secret_paths:
+    required: true
+    description: 'Comma-separated list of Vault secret paths (KV v2)'
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        if ! command -v vault &> /dev/null; then
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install vault -y
+        fi
+        export VAULT_ADDR="${{ inputs.vault_addr }}"
+        export VAULT_TOKEN="${{ inputs.token }}"
+        IFS=',' read -ra PATHS <<< "${{ inputs.secret_paths }}"
+        for path in "${PATHS[@]}"; do
+          vault kv get -format=json "$path" | jq -r '.data.data | to_entries[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
+        done

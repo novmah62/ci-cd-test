@@ -99,21 +99,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Import Secrets from Vault
-        uses: hashicorp/vault-action@v2
+      - name: Get secrets from Vault
+        uses: ./.github/actions/export-secrets-vault
         with:
-          url: https://secret.vdx.vn
-#          method: approle
+          vault_addr: https://secret.vdx.vn
           token: ${{ secrets.VAULT_TOKEN }}
-#          roleId: ${{ secrets.VAULT_ROLE_ID }}
-#          secretId: ${{ secrets.VAULT_SECRET_ID }}
-          secrets: |
-             cubbyhole/manhnv/ansible        GITHUB_PAT | GITHUB_PAT ;
-#            kv/data/vdx-vn/g10-qms/dev/db   odoo_db_host | odoo_db_host ;
-#            kv/data/vdx-vn/g10-qms/dev/info odoo_master_password | odoo_master_password ;
-#            kv/data/vdx-vn/g10-qms/dev/ssh  odoo_ssh_host | odoo_ssh_host;
-      - name: Print Vault env keys (test only)
-        run: |
-          echo "==== ENV KEYS FROM VAULT ===="
-          printenv | sort
+          secret_paths: cubbyhole/manhnv/ansible, cubbyhole/manhnv/odoo
+      - name: Print all Vault env (test)
+        run: printenv | sort
+
+#      - uses: actions/checkout@v4
+#      - name: Import Secrets from Vault
+#        uses: hashicorp/vault-action@v2
+#        with:
+#          url: https://secret.vdx.vn
+##          method: approle
+#          token: ${{ secrets.VAULT_TOKEN }}
+##          roleId: ${{ secrets.VAULT_ROLE_ID }}
+##          secretId: ${{ secrets.VAULT_SECRET_ID }}
+#          secrets: |
+#             cubbyhole/manhnv/ansible        GITHUB_PAT | GITHUB_PAT ;
+##            kv/data/vdx-vn/g10-qms/dev/db   odoo_db_host | odoo_db_host ;
+##            kv/data/vdx-vn/g10-qms/dev/info odoo_master_password | odoo_master_password ;
+##            kv/data/vdx-vn/g10-qms/dev/ssh  odoo_ssh_host | odoo_ssh_host;
+#      - name: Print Vault env keys (test only)
+#        run: |
+#          echo "==== ENV KEYS FROM VAULT ===="
+#          printenv | sort
   
